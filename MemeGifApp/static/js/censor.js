@@ -1,4 +1,5 @@
 $(() => {
+	subtitleInfos = [];
     image_list = $("#imageList");
     image_list.show();
     image_list.children().eq(0).show();
@@ -34,7 +35,7 @@ scale.prototype = {
                         var moveX = p.clientX + scrollX;
                         var moveY = p.clientY + scrollY;
                         console.log(moveX + "-" + f.currentX + "," + moveY + "-" + f.currentY);
-                        if ((Math.abs(moveX - f.currentX) < 20) && (Math.abs(moveY - f.currentY) < 20)) {
+                        if ((Math.abs(moveX - f.currentX) < 100) && (Math.abs(moveY - f.currentY) < 100)) {
                             if (moveX < f.minLength) {
                                 f.cur_bar.css("width", "0%");
                                 f.currentX = f.minLength;
@@ -65,3 +66,16 @@ scale.prototype = {
         });
     }
 };
+
+
+var tempSection = {};
+function insertClick() {
+	for (var i in image_list) {
+		// TODO 判断落点不在已有段落的内部
+	}
+	if (!tempSection.start) {
+		// TODO 记录临时起点
+	} else {
+		// TODO 判断终点>起点，并且没有横跨段落
+	}
+}

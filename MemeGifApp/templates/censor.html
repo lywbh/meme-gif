@@ -7,16 +7,24 @@
 </head>
 <body>
     <h1>Meme Gif</h1>
-    <ul id="imageList">
-        {% for item in images %}
-        <li><img src="data:image/png;base64,{{item}}"></li>
-        {% endfor %}
-    </ul>
-    <div class="progress-bar">
-        <div id="all-progress">
-            <div id="current-progress">
-                <span id="progress-button"></span>
+    <div class="container">
+        <div class="pic_data">
+            <ul id="imageList">
+                {% for item in images %}
+                <li><img src="data:image/png;base64,{{item}}"></li>
+                {% endfor %}
+            </ul>
+            <div class="progress-bar">
+                <div id="all-progress">
+                    <div id="current-progress">
+                        <span id="progress-button"></span>
+                    </div>
+                </div>
             </div>
+        </div>
+        <div class="menu_panel">
+            <button onclick="insertClick">insert subtitle</button>
+            <ul id="subtitleList"></ul>
         </div>
     </div>
     <script src="/static/js/jquery-3.1.1.min.js"></script>

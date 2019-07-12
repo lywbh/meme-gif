@@ -1,7 +1,3 @@
-body {
-    text-align: center;
-}
-
 ul, li {
     margin: 0;
     padding: 0;
@@ -9,8 +5,28 @@ ul, li {
     display: none;
 }
 
-img {
+h1 {
+    text-align: center;
+}
+
+.container {
+    margin: 0 auto;
+    width: 1000px;
+}
+
+.pic_data {
+    float: left;
     width: 600px;
+}
+
+#imageList img {
+    width: 600px;
+}
+
+.menu_panel {
+    float: right;
+    width: 360px;
+    padding: 20px;
 }
 
 .progress-bar {
