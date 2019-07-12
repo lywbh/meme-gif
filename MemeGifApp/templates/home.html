@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meme Gif</title>
+</head>
+<body>
+    <h1>Meme Gif</h1>
+    <form action="/decompose" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file">
+        <input type="submit">
+    </form>
+</body>
+</html>
