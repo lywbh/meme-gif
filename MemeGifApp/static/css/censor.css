@@ -15,7 +15,8 @@ h1 {
 
 .pic_data {
     float: left;
-    width: 600px;
+    width: 560px;
+    padding: 20px;
 }
 
 .pic_data li {
@@ -23,7 +24,7 @@ h1 {
 }
 
 #imageList img {
-    width: 600px;
+    width: 560px;
 }
 
 .menu_panel {
@@ -47,6 +48,7 @@ h1 {
 }
 
 #generatedGif > img {
+    width: 100%;
     display: none;
 }
 
@@ -58,7 +60,7 @@ h1 {
 #all-progress {
     margin-top: 20px;
     margin-bottom: 20px;
-    width: 600px;
+    width: 560px;
     border-radius: 10px;
     height: 10px;
     background-color: #edca13;

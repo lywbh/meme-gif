@@ -3,7 +3,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from MemeGifApp.decomposer import decompose_image
-from MemeGifApp.composer import create_gif
+from MemeGifApp.composer import create_gif, embed_subtitle
 
 
 def home(request):
@@ -22,7 +22,9 @@ def generate(request):
     if request.method == 'POST':
         req_json = json.loads(str(request.body, "utf-8"))
         base64_list = req_json['imgList']
-        # TODO 字幕渲染到每张图片上
         subtitle_list = req_json['subtitleList']
+        for subtitle_info in subtitle_list:
+            for i in range(subtitle_info['start'], subtitle_info['end']):
+                base64_list[i] = embed_subtitle(base64_list[i], subtitle_info['text'])
         gif_base64 = create_gif(base64_list)
         return HttpResponse(gif_base64)
