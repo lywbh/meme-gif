@@ -1,10 +1,26 @@
+const BASE64_HEAD = "data:image/png;base64,";
+
+let tempSection;
+let currentPage;
+let image_list;
+let subtitle_list;
+let total_page;
+let progress_panel;
+let insert_button;
+let result_img;
+
 $(() => {
-	subtitleInfos = [];
+    tempSection = {};
+    currentPage = 0;
     image_list = $("#imageList");
+    subtitle_list = $("#subtitleList");
     image_list.show();
     image_list.children().eq(0).show();
     total_page = image_list.children().length;
-    progress_bar = new scale("#progress-button", "#all-progress", "#current-progress");
+    progress_panel = $(".progress-bar");
+    insert_button = $("#insertButton");
+    result_img = $("#generatedGif > img");
+    new scale("#progress-button", "#all-progress", "#current-progress");
 });
 
 scale = function (btn, bar, cur_bar) {
@@ -20,21 +36,20 @@ scale = function (btn, bar, cur_bar) {
 
 scale.prototype = {
     init: function () {
-        var f = this;
+        const f = this;
         ["touchstart", "mousedown"].forEach(est => {
-            $(document).bind(est, e1 => {
+            progress_panel.bind(est, e1 => {
                 e1.preventDefault();
                 ["touchmove", "mousemove"].forEach(emv => {
-                    $(document).bind(emv, e2 => {
-                        var p = e2;
+                    progress_panel.bind(emv, e2 => {
+                        let p = e2;
                         if (e2.touches) {
                             p = e2.touches[0];
                         }
-                        var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
-                        var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-                        var moveX = p.clientX + scrollX;
-                        var moveY = p.clientY + scrollY;
-                        console.log(moveX + "-" + f.currentX + "," + moveY + "-" + f.currentY);
+                        let scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+                        let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+                        let moveX = p.clientX + scrollX;
+                        let moveY = p.clientY + scrollY;
                         if ((Math.abs(moveX - f.currentX) < 100) && (Math.abs(moveY - f.currentY) < 100)) {
                             if (moveX < f.minLength) {
                                 f.cur_bar.css("width", "0%");
@@ -43,14 +58,14 @@ scale.prototype = {
                                 f.cur_bar.css("width", "100%");
                                 f.currentX = f.maxLength;
                             } else {
-                                var percent = (moveX - f.minLength) / (f.maxLength - f.minLength);
+                                let percent = (moveX - f.minLength) / (f.maxLength - f.minLength);
                                 f.cur_bar.css("width", percent * 100 + "%");
                                 f.currentX = moveX;
                                 image_list.children().hide();
-                                var page = Math.floor(percent * image_list.children().length);
-                                if (page < 0) page = 0;
-                                if (page > total_page - 1) page = total_page - 1;
-                                image_list.children().eq(page).show();
+                                currentPage = Math.floor(percent * image_list.children().length);
+                                if (currentPage < 0) currentPage = 0;
+                                if (currentPage > total_page - 1) currentPage = total_page - 1;
+                                image_list.children().eq(currentPage).show();
                             }
                         }
                     });
@@ -58,24 +73,102 @@ scale.prototype = {
             });
         });
         ["touchend", "mouseup"].forEach(eed => {
-            $(document).bind(eed, () => {
+            progress_panel.bind(eed, () => {
                 ["touchmove", "mousemove"].forEach(emv => {
-                    $(document).unbind(emv);
+                    progress_panel.unbind(emv);
                 });
             });
         });
     }
 };
 
+function buildSubtitleInfos() {
+    let subtitleInfos = [];
+    subtitle_list.children().each((i, e) => {
+        let section = {
+            text: $(e).find(".subtitle_text").val(),
+            start: parseInt($(e).find(".subtitle_start").val()),
+            end: parseInt($(e).find(".subtitle_end").val())
+        };
+        subtitleInfos.push(section);
+    });
+    return subtitleInfos;
+}
 
-var tempSection = {};
 function insertClick() {
-	for (var i in image_list) {
-		// TODO ≈–∂œ¬‰µ„≤ª‘⁄“—”–∂Œ¬‰µƒƒ⁄≤ø
-	}
-	if (!tempSection.start) {
-		// TODO º«¬º¡Ÿ ±∆µ„
-	} else {
-		// TODO ≈–∂œ÷’µ„>∆µ„£¨≤¢«“√ª”–∫·øÁ∂Œ¬‰
-	}
+    let subtitleInfos = buildSubtitleInfos();
+    for (let i in subtitleInfos) {
+        let section = subtitleInfos[i];
+        if (currentPage >= section.start && currentPage <= section.end) {
+            alert("ÂΩìÂâç‰ΩçÁΩÆÂ∑≤Â≠òÂú®Â≠óÂπï");
+            return;
+        }
+    }
+    if (tempSection.start === undefined) {
+        tempSection.start = currentPage;
+        insert_button.text("ÁÇπÂáªÁ°ÆÂÆöÁªìÊùü‰ΩçÁΩÆ");
+    } else {
+        if (currentPage <= tempSection.start) {
+            alert("ÁªìÊùü‰ΩçÁΩÆ‰∏çËÉΩÂ∞è‰∫éÊàñÁ≠â‰∫éËµ∑Âßã‰ΩçÁΩÆ");
+            return;
+        }
+        for (let i in subtitleInfos) {
+            let section = subtitleInfos[i];
+            if (section.start > tempSection.start && section.end < currentPage) {
+                alert("Â≠óÂπïÊúâÈáçÂè†ÔºåËØ∑ÈáçÊñ∞ÈÄâÊã©");
+                return;
+            }
+        }
+        tempSection.end = currentPage;
+        tempSection.text = prompt("ËØ∑ËæìÂÖ•Â≠óÂπïÂÜÖÂÆπÔºö");
+        let cloneSection = JSON.parse(JSON.stringify(tempSection));
+        tempSection = {};
+        let pos;
+        for (pos = 0; pos < subtitleInfos.length; pos++) {
+            let section = subtitleInfos[pos];
+            if (section.start > cloneSection.end) {
+                break;
+            }
+        }
+        subtitleInfos.splice(pos, 0, cloneSection);
+        reloadSubtitleList(subtitleInfos);
+        insert_button.text("ÁÇπÂáªÂú®Ê≠§Â§ÑÊèíÂÖ•Â≠óÂπï");
+    }
+}
+
+function reloadSubtitleList(subtitleInfos) {
+    subtitle_list.empty();
+    for (let i in subtitleInfos) {
+        let section = subtitleInfos[i];
+        subtitle_list.append($("<li></li>").append(buildSubtitleItem(section)));
+    }
+}
+
+function buildSubtitleItem(section) {
+    return $('<div class="subtitle_item">' +
+        '<input class="subtitle_text" type="text" value="' + section.text + '">' +
+        '<input class="subtitle_start" type="hidden" value="' + section.start + '">' +
+        '<input class="subtitle_end" type="hidden" value="' + section.end + '">' +
+        '</div>');
+}
+
+function submitMeme() {
+    let submitBody = {};
+    let imgList = [];
+    image_list.find("img").each((i, e) => {
+        let imgBase64 = $(e).attr("src").replace(BASE64_HEAD, "");
+        imgList.push(imgBase64);
+    });
+    submitBody.imgList = imgList;
+    submitBody.subtitleList = buildSubtitleInfos();
+    $.ajax({
+        url: "/generate",
+        type: "post",
+        contentType: 'application/json',
+        data: JSON.stringify(submitBody),
+        success: r => {
+            result_img.attr("src", BASE64_HEAD + r);
+            result_img.show();
+        }
+    });
 }

@@ -1,6 +1,6 @@
-{% load staticfiles %}
 <!DOCTYPE html>
-<html>
+{% load staticfiles %}
+<html lang="en">
 <head>
     <title>Meme Gif</title>
     <link rel="stylesheet" type="text/css" href="/static/css/censor.css">
@@ -11,7 +11,7 @@
         <div class="pic_data">
             <ul id="imageList">
                 {% for item in images %}
-                <li><img src="data:image/png;base64,{{item}}"></li>
+                <li><img src="data:image/png;base64,{{item}}" alt="img"></li>
                 {% endfor %}
             </ul>
             <div class="progress-bar">
@@ -23,8 +23,10 @@
             </div>
         </div>
         <div class="menu_panel">
-            <button onclick="insertClick">insert subtitle</button>
+            <button id="insertButton" onclick="insertClick()">点击在此处插入字幕</button>
+            <button id="submitMeme" onclick="submitMeme()">生成GIF</button>
             <ul id="subtitleList"></ul>
+            <div id="generatedGif"><img></div>
         </div>
     </div>
     <script src="/static/js/jquery-3.1.1.min.js"></script>

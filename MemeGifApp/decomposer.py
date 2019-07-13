@@ -1,9 +1,9 @@
-﻿import os
-import base64
+﻿import base64
 from io import BytesIO
 from PIL import Image
- 
-def analyseImage(file):
+
+
+def analyse_image(file):
     im = Image.open(file)
     results = {
         'size': im.size,
@@ -22,11 +22,11 @@ def analyseImage(file):
     except EOFError:
         pass
     return results
- 
- 
-def decomposeImage(file):
+
+
+def decompose_image(file):
     decomposed_list = []
-    mode = analyseImage(file)['mode']
+    mode = analyse_image(file)['mode']
     im = Image.open(file)
     p = im.getpalette()
     last_frame = im.convert('RGBA')
@@ -37,7 +37,7 @@ def decomposeImage(file):
             new_frame = Image.new('RGBA', im.size)
             if mode == 'partial':
                 new_frame.paste(last_frame)
-            new_frame.paste(im, (0,0), im.convert('RGBA'))
+            new_frame.paste(im, (0, 0), im.convert('RGBA'))
             output_buffer = BytesIO()
             new_frame.save(output_buffer, 'PNG')
             base64_data = base64.b64encode(output_buffer.getvalue())

@@ -3,5 +3,6 @@ from MemeGifApp import views
 
 urlpatterns = [
     path('meme', views.home),
-    path('decompose', views.decompose)
+    path('decompose', views.decompose),
+    path('generate', views.generate)
 ]
