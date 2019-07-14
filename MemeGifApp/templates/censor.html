@@ -9,6 +9,7 @@
     <h1>Meme Gif</h1>
     <div class="container">
         <div class="pic_data">
+            <input id="duration" type="hidden" value="{{duration}}">
             <ul id="imageList">
                 {% for item in images %}
                 <li><img src="data:image/png;base64,{{item}}" alt="img"></li>

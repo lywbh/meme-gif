@@ -2,6 +2,7 @@ const BASE64_HEAD = "data:image/png;base64,";
 
 let tempSection;
 let currentPage;
+let duration;
 let image_list;
 let subtitle_list;
 let total_page;
@@ -12,6 +13,7 @@ let result_img;
 $(() => {
     tempSection = {};
     currentPage = 0;
+    duration = parseInt($("#duration").val());
     image_list = $("#imageList");
     subtitle_list = $("#subtitleList");
     image_list.show();
@@ -161,6 +163,7 @@ function submitMeme() {
     });
     submitBody.imgList = imgList;
     submitBody.subtitleList = buildSubtitleInfos();
+    submitBody.duration = duration;
     $.ajax({
         url: "/generate",
         type: "post",
